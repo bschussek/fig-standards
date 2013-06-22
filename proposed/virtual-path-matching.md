@@ -78,13 +78,18 @@ interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
 
 ### 1.1 Definitions
 
+> Unless there is a specific reason not to, it would aid consistency if we complied 
+> with the definitions as presented within the autoloader, perhaps inserting new terms required
+> but attempting to stay within the set provided if possible
+> https://github.com/php-fig/fig-standards/blob/master/proposed/autoloader.md#2-definitions
+
 **Path Matcher**: A program implementing the path matching algorithm described
 in section 1.2.
 
 > This should neither be fixed to PHP code, nor C code, nor a method, nor a
 > function. "Program" is a generic term that matches all of these concepts.
 
-**Separator**: A single character chosen by the path matcher, for example a
+**Separator**: A single character chosen by the path matcher as needed for the use case, for example a
 slash ("/").
 
 > Allows to use this algorithm for both autoloading (separator: "\") and
@@ -119,13 +124,13 @@ local file system.
 
 ### 1.2 Path Matching Algorithm
 
-Compliant path matchers MUST implement this algorithm or an equivalent
-algorithm that returns the same outputs for the same inputs.
+Compliant path matchers CAN implement this algorithm or an equivalent
+algorithm. The path matcher MUST return the same outputs for the same inputs.
 
 > For example, a caching algorithm is implemented differently but behaves
 > the same.
 
-Given a logical path and a path mapping which associates that path with one
+Given a logical path and a path mapping which associates the path with one
 or more base paths, then every base path is a *potential match*. For example,
 given the separator "/", the path `/A/B/C/D` and a path mapping which associates
 `/A/B/C/D` with `/src`, then `/src` is a potential match.
@@ -150,6 +155,9 @@ file system. If it does, it is called a *match*. For example, if both
 exists on the file system, then only `/src/C/D` is a match.
 
 > Matches must exist.
+> I'm wondering if this rule necessary. It's actually just verifying the accuracy
+> of the matching process since no paths should be in the mix that do not exist.
+> I'd consider removing unless it somehow could be possible absent an error.
 
 If both a full path and any of its prefixes are mapped, potential matches
 for the full path MUST be evaluated before those for the prefixes. If a mapped
@@ -157,20 +165,29 @@ path contains multiple mapped prefixes, potential matches for longer prefixes
 MUST be evaluated before those for shorter prefixes. 
 
 > Define order of evaluation..
+> Definitely wonder on this. I understand the thinking but it could then 
+> prevent an override with a path shorter than the original. Instead, 
+> I would process the pairs in the order of the array. The prepend allows
+> developers to position those values in the array intentional. Provided 
+> the matching process takes the array as it comes, it should sort. 
+> Or, am I missing something? Unit test candidate
+> I could also be confused, to be honest, I'm not sure what this is saying exactly.
 
 If a prefix is mapped to multiple base paths, the potential matches MUST be
 evaluated in the order of the base paths.
 
 > When multiple implementations of this algorithm (e.g. PSR-X and PSR-R)
 > receive the same mapping, they should behave identically.
+> If this is saying to process the array as it is stored, +1.
 
 A path matcher MAY choose to abort this algorithm once a match has been found,
-or continue in order to generate all matches.
+or to continue in order to generate all matches.
 
-> Find first vs. find all matches.
+> Find first vs. find all matches
+> Good.
 
-A path matcher MAY not find a match for a logical path. The result in this
-case is undefined.
+When a match for a logical path is not found, the path matcher MAY implement 
+a response suitable to the use case. 
 
 > Exception, returning null etc. can be chosen by the implementation.
 
@@ -191,14 +208,14 @@ path          = path-prefix, [relative-path]
 2. Package
 ----------
 
-The test suite to verify a path macher implementation is provided as part of the
+The test suite to verify a path matcher implementation is provided as part of the
 psr/path-matching package.
 
 3. Example Implementation
 -------------------------
 
 The example implementation MUST NOT be regarded as part of the specification; it is
-an example only. Path matchers MAY contain additional features and MAY differ in how
+an example, only. Path matchers MAY contain additional features and MAY differ in how
 they are implemented. As long as a path matcher adheres to the rules set forth in
 the specification it MUST be considered compatible with this PSR.
 

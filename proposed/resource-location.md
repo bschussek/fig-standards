@@ -72,6 +72,11 @@
 >    ```php
 >    $locator->findResource('classpath:///Acme/Demo/config/settings.yml');
 >    ```
+>   Since this is now going to be based on URI namespaces, it may or may not
+>   be true that the implementation elected to map folders in this manner. 
+>   Unless we are stating all classes and class subfolders and files must be 
+>   mapped a certain way, I think this is a "it depends on what they do" 
+>   situation. Does that make sense?
 >
 > 2. **Locate both directories and files**
 >
@@ -79,6 +84,19 @@
 >    $locator->findResource('classpath:///Acme/Demo/config/settings.yml');
 >    $locator->findResource('classpath:///Acme/Demo/config');
 >    ```
+>   I realize this is an example prior to taking the URI namespace route, but  
+>   just to confirm we understand it the same, the path in the namespace will 
+>   not specify an extension. The scheme will be defined to allow one or more
+>   extension values, but the namespace itself has file extension. 
+> 
+>   Of course, that has implications in that multiple files could share the 
+>   same FQNS: example.txt and example.php -- the scheme file extensions are
+>   tested with the node to find the appropriate match for that type. The
+>   possibility would still exist, of course, that multiple files, each with
+>   different extensions, defined to the same scheme, could result in the 
+>   wrong match. That's something I'd ignore in the standard and leave to the
+>   implementation to edit against. But, I want to raise the issue for your 
+>   consideration.
 >
 > 3. **Short identifiers when the context is known**
 >
@@ -92,6 +110,10 @@
 >    {% include 'view:///acme/demo-package/show.html.twig' %}
 >    {% include '/acme/demo-package/show.html.twig' %}
 >    ```
+>   This is another example of simply defining the namespaces to do so. 
+>   I'll give matching examples of how I would use tags to do this, but it 
+>   is something the developer would have to build into the implementation
+>   when building (manually or in an automated fashion) addNamespace statements.
 >
 > 4. **Locate resources independent from PHP classes**
 >
@@ -100,7 +122,7 @@
 >
 >    ```php
 >    $locator->addPath('view', '/app/', '/path/to/app/views');
->    $locator->findResource('view:///app/layout.php');
+>    $locator->findResource('view:///app/layout');
 >    ```
 >
 > 5. **Support resource overriding**
@@ -113,7 +135,20 @@
 >        '/path/to/acme/demo/src',
 >    ));
 >
->    include $locator->findResource('classpath:///Acme/Demo/Parser.php');
+>    include $locator->findResource('classpath:///Acme/Demo/Parser');
+>
+>   I do not advise adding the scheme to the addPath signature. The scheme 
+>   will define file extensions matching, so that will match directly to your Parser.php
+>   file. Then, selectivity can be acheived by your how those addNamespace paths
+>   are defined. We can also use tagging to create custom paths based on file and folder
+>   search criteria if more selectivity is needed. 
+>   
+>   The problem is in adding in the scheme, it now excludes other schemes from reusing the
+>   the namespace. Those location-based relationships will benefit from keeping it open.
+>
+>      Ex. '/Acme/Demo/' is a namespace for the class loader to load Parser.php
+>        The developer can affix 'config/something' to that Class NS to find it's config file.
+>          $locator->findResource('config:///Acme/Demo/Config/Something');
 >
 > **Performance**:
 >
@@ -126,6 +161,7 @@
 > * classpath:///Acme/Demo/Parser.php
 >
 > would be cached through symbolic links in
+>  and, in fact, it can be cached using a namespace (going to play with that, cool example)
 >
 > ```
 > /cache
@@ -266,6 +302,9 @@ interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
 
 ### 1.1 Definitions
 
+>> same comment for definitions as other document, where there is a definition in a 
+>> a previous PSR, would be good to adopt it (would be nice if FIG had a list of terms...)
+
 **Implementation**: An implementation of `Psr\ResourceLocation\ResourceLocatorInterface`.
 
 **Consumer**: Code using a `Psr\ResourceLocation\ResourceLocatorInterface` implementation.
@@ -301,9 +340,13 @@ path is `C/D`. Relative paths never start with a slash ("/").
 qualified name as defined by the
 [PHP Name Resolution Rules](http://php.net/manual/en/language.namespaces.rules.php).
 
+>> We might to use use FQNS instead of FQCN
+
 **Namespace**: Given a FQCN `\A\B\C\D`, the namespace of that class is `\A\B\C`.
 
 ### 1.2 Resource URIs
+
+>> Would you agree to calling these Namespace URIs? 
 
 Resources are identified by URIs that MUST conform to
 [RFC 3986](http://tools.ietf.org/html/rfc3986), with the following restrictions.
@@ -319,20 +362,30 @@ Resources are identified by URIs that MUST conform to
 >
 > The advantage of URIs is that we can use PHP's native functions such as
 > `dirname()` or `basename()` to work with them.
+> 
+> After more discussion with @AmyStephen, a way to use namespaces as the path within the URI
+> was determined and peace ruled the land. ;-)
+>
 
 Resource URIs MUST contain at least a non-empty scheme, followed by a colon
 (":"), a double slash ("//") and a non-empty path. Additional URI parts MAY be
 interpreted by implementors, but their effect is undefined by this specification.
 
 > i.e. scheme:///some/path
+>  This is so awesome, BTW.
 >
 > Other URI parts are the authority (host:port) or the query string. We don't
-> need them for the base functionality, but their presence doesn't hurt either.
+> need them for the base functionality, but their presence doesn't hurt either
+>
+> This is one question I had for you, what would we use for host:port? The 
+> value from the request? Seems like this is positioning for REST - and turning
+> internal processing into lots of routes. Kinda cool.
 >
 > We have the alternatives of including or excluding the double slash after the
 > scheme:
 >
 > * scheme:///some/path vs.
+> My assumption is this one?
 > * scheme:/some/path
 >
 > Both are valid URIs. The disadvantage of the latter is that PHP Stream
@@ -349,6 +402,8 @@ The path of a resource URI SHOULD start with a slash ("/").
 >
 > SHOULD and not MUST in order to support absolute Windows paths properly:
 > file://C:/some/path
+>
+> However, using namespaces in path now we will not see those types of URIs
 
 Valid path segments consist of alphanumeric characters (`A-Z`, `a-z`, `0-9`),
 underscores (`_`), hyphens (`-`), colons (`:`) and dots (`.`). Implementors MAY
@@ -359,6 +414,7 @@ for such URIs.
 > "<" on NTFS.
 >
 > Should percent encoding (%20 etc.) be allowed, as defined in the RFC?
+> For clear security, we might want to describe the escaping and filtering requirements.
 
 Paths MUST NOT contain dot segments (`.` and `..`).
 
@@ -370,22 +426,29 @@ schemes (for example the "file" scheme in section 1.5).
 > E.g. the "classpath" scheme requires path prefixes to correspond to PHP
 > namespaces with backslashes replaced by forward slashes.
 >
-> E.g. "\Acme\Demo\" -> "classpath:///Acme/Demo/config.yml"
+> E.g. "\Acme\Demo\" -> "classpath:///Acme/Demo/config.yml
+>
+> Except we won't be doing these now that we are using namespaces
 
 Examples of valid URIs:
 
-- classpath:///Acme/Demo/Parser.php
-- view:///acme/demo-package/template.php
+- classpath:///Acme/Demo/Parser
+- view:///acme/demo-package/template
 - config:///acme/demo-package
 - file:///
-- file://C:/Project/settings.xml
+- file:///Project/settings
+
+> Note how I changed above examples to confirm if we are both seeing this the 
+> same now that namespaces are the base of the URI.
 
 ### 1.3 Resource Variants
 
 The main task of the resource locator is to resolve resource URIs to existing
 file paths. These are called *resource variants*. Each resource URI MAY resolve
 to multiple variants. The concrete definition of how to obtain a variant for
-a given URI is provided by scheme specifications (section 1.5 and 1.6).
+a given URI is provided by scheme specifications (section 1.5 and 1.6
+
+> Add definition above
 
 > For overriding resources. See requirement 5.
 
@@ -396,30 +459,43 @@ the implementation (e.g. FIFO). The method MUST throw a
 `Psr\ResourceLocation\IllegalUriException` if the URI does not correspond to the
 rules described in section 1.2.
 
+> Again this is a difference due to namespaces. Recommend the method `findResourceVariants()` 
+> is removed from the interface. One of the values of namespaces is the ability to map
+> a namespace to the same resource many times. Each namespace could be used for different purposes
+> I need to understand the use case -- what need does this provide for -- then we can 
+> figure out a way to do so with namespaces. Do you have an example?
+
 > If a scheme specification defines what a "variant" is for a given URI, by
 > implication every such variant must be returned by findResourceVariants().
 
 `findResourceVariants()` MUST return an array which MUST contain only strings,
 i.e. the resource variants. If no variants exist for a resource URI, the array
-MUST be empty.
+MUST be empty
+
+> same as above, use case will help clarify.
 
 > No other return values allowed.
 >
 > If a scheme specification defines what a "variant" is but no such variant
 > can be found for a given URI, by implication an empty array must be returned.
 
-Each resource variant MUST be an absolute path or a URI and MUST exist on the
-local file system. If a variant is given as URI, it MUST have one of the
-[following schemes available in PHP](http://php.net/manual/en/wrappers.php):
-
-* file://
-* phar://
-* zlib://
-* zip://
-* bzip2://
+> Some namespaces will be to folders, so the portion just removed would limit results.
+> Also, it is best to not include physical mapping in namespaces - if someone wants to use those values as scheme
+> values, that's fine, but it's not a good practice, IMO, and certainly should not be required
+> in the standard. It's just a big array of real paths to fake paths - no reason it
+> must describe the protocol in there.
 
 > Files must exist, otherwise the validity of resource variants cannot be
-> determined. For example:
+> determined. 
+>
+> Sure, but let's not add that to the standard. If a namespace is added that
+> does not exist, that's a bug in the namespace loader. Standards get to pretend
+> they live in a perfect world (unless defining edits or error handling, etc.)
+> Perhaps though you are saying that "if the URI namespace of a file is requested
+> then the process must return the full path to the file." (Rather than a path,
+> or partial path to that value?)
+>
+> For example:
 >
 > ```php
 > $locator->addPath('classpath', '/Acme/Demo/', array(
@@ -429,7 +505,7 @@ local file system. If a variant is given as URI, it MUST have one of the
 >
 > // returns /path/to/overridden/src/Parser.php if it exists,
 > // /path/to/acme/src/Parser.php otherwise
-> $locator->findResource('classpath:///Acme/Demo/Parser.php');
+> $locator->findResource('classpath:///Acme/Demo/Parser');
 > ```
 >
 > As for the URI schemes, these are the only ones that are not restricted by
@@ -446,11 +522,13 @@ overlapping.
 
 > For clarification only. Not sure where this might be useful, but I'm also
 > not sure that it never will be.
+> I'm not loving it either - but I understand why you attempted it. Not sure.
 
 `findResourceVariants()` MUST return the same variants in the same order
 when called multiple times during the execution of a PHP application.
 
-> Idempotence.
+> Idempotence
+> Want this to go away if possible, I think it's just a remant of non namespace approach.
 
 ### 1.4 Resource Location
 
@@ -462,6 +540,15 @@ if the URI does not correspond to the rules described in section 1.2.
 `findResource()` MUST return a string, which MUST be equivalent to the first
 entry of the array returned by `findResourceVariants()`. If no existing path
 can be found, a `Psr\ResourceLocation\NoSuchResourceException` MUST be thrown.
+
+> Whoa. Do not agree. We need to think this through very carefully. 
+> The findResource response will vary. A class loader result will be the 
+> included file. I am using handlers. There is a unique handler for each 
+> unique treatment required to return the results in the manner expected by
+> the application. In my approach, the file scheme defines what handler must
+> be used as the response to the find. We need to fill this out a bit. 
+> What do you think about including handlers in the spec? Not sure.
+
 
 > The first variant is the highest priority one, as defined in section 1.3.
 
@@ -475,8 +562,13 @@ a resource variant for the given URI.
 
 > Once it is defined what a resource variant is for the file scheme, the
 > rules in section 1.3 and 1.4 guarantee that the locator behaves correctly.
+> Makes sense.
 
 ### 1.6 Classpath Scheme
+
+>> See I think all of this can come out, too, without namespaces this might 
+>> be needed - OR - I just don't understand the purpose of this. Probably
+>> need to talk?
 
 Implementations of this PSR MUST support the scheme "classpath". The URI path
 MUST then begin with a slash ("/"), followed by a top-level path segment (the
@@ -538,14 +630,30 @@ This is the *primary class*. All other classes in the file MUST belong to the
 same namespace as the primary class. The implementation MAY choose not to
 validate this rule.
 
+>> There is absolutely no reason to mention primary classes or anything of that
+>> nature here. That's going to require application-specific knowledge. 
+>> Each developer when building it into the framework will have to ensure this is
+>> true if they want that selectivity around those classes. Maybe all they want
+>> is to build a gallery? and this is not necessary. 
+>> How those namespace pairs are designed and even built into a map is outside
+>> of the scope, IMO.
+
 > Make sure that when mapping
 >
-> * /Acme/Demo/Parser.php => /path/to/src/Parser.php
+> * /Acme/Demo/Parser => /path/to/src/Parser.php
 >
 > then Parser.php must contain the class \Acme\Demo\Parser.
 >
+> IMO, that's a implementation concern
+>
 > If it contains further classes, these must belong to the \Acme\Demo\
 > namespace.
+>
+> If that's how you need the namespaces, fine, but let's not get into that
+> with this standard. We will not understand what the developer is trying to
+> do or what files are best namespaced or how to do so. I can see blog posts
+> and developers sharing namespacing strategies with one another around an
+> application or framework. But, out of the standard, IMO.
 >
 > "PHP class definitions" are defined using include to avoid restrictions on
 > the file extensions (".php", ".php5" etc.) or similar.
@@ -555,6 +663,22 @@ validate this rule.
 Further schemes MAY freely be added by implementations, consumers and future
 PSRs. However, the following schemes SHOULD be used for the corresponding
 resource types listed in the table:
+
+>> See that's a practice Symfony folks are accustomed to using. I don't have
+>> any files for lang - I keep it in a database. I don't NS doc files
+>> It would limit me to have to use public:// for those assets as I have 
+>> processing needs that require I keep them separate and no value in 
+>> combining them. So, this would preclude my use of the standard. 
+
+>> Instead the standard should be more generic and define what a scheme is
+>> and what it is used for. So, for me, a scheme is a way of categorizing 
+>> namespaces so that valid file extensions can be defined and a handler 
+>> can be assigned for responding in a manner with the findResource results
+>> that the application intends. 
+
+>> Ideal: ? : The consumer MUST define schemes which associate valid file extensions
+>> search results handling requirements. These schemes are used as in the URI.
+>> Examples:
 
 | Scheme     | Resource Type                             |
 |------------|-------------------------------------------|
@@ -575,6 +699,9 @@ package.
 ---------------------------
 
 > TODO: Will be elaborated once there is agreement on the general direction.
+> Yup. Ok, good stuff. If we can find time to get with Beau and get into
+> some of this detail -- some areas need a lot less detail, some need more 
+> fleshing out - this is an excellent start. Thanks much.
 
 ```php
 <?php
