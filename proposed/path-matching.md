@@ -67,6 +67,8 @@ algorithm that returns the same outputs for the same inputs.
 > For example, a caching algorithm is implemented differently but behaves
 > the same.
 
+#### 1. Generating Potential Matches
+
 Given a logical path and a path mapping which associates that path with one
 or more base paths, then every base path is a *potential match*. For example,
 given the separator "/", the path `/A/B/C/D` and a path mapping which associates
@@ -85,6 +87,8 @@ then `/src/C/D` is a potential match.
 Separators in potential matches MUST be replaced by directory separators.
 
 > Allows the use of other separators than slashes, e.g. backslashes ("\").
+
+#### 2. Evaluating Potential Matches
 
 A potential match is *evaluated* by checking whether it exists on the local
 file system. If it does, it is called a *match*. For example, if both
