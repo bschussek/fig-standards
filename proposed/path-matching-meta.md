@@ -113,7 +113,64 @@ Pros:
 
 Cons:
 
-* none known so far
+* one more PSR that needs to be ratified before PSR-X
+
+### 4.2 Alternative: Splitting in two PSRs
+
+Paul M. Jones suggested to split this PSR in two PSRs:
+
+* [Path Transformation](https://github.com/pmjones/fig-leaf/blob/master/transform-logical-paths.md)
+* [Path Matching](https://github.com/bschussek/fig-standards/blob/path-matching-v2/proposed/path-matching.md)
+
+The basic idea is to specify the following transformation algorithm separately
+from the matching algorithm:
+
+```php
+function transform($path, $prefix, $separator, $base_path);
+
+// "\Foo\Bar\Baz\Qux" => "/path/to/foo-bar/src/Baz/Qux.php"
+transform(
+    '\Foo\Bar\Baz\Qux',
+    '\Foo\Bar',
+    '\\',
+    '/path/to/foo-bar/src',
+    '.php'
+);
+
+// ":Foo:Bar:Baz:Qux" => "/path/to/foo-bar/config/Baz/Qux.yml"
+transform(
+    ':Foo:Bar:Baz:Qux',
+    ':Foo:Bar',
+    ':',
+    '/path/to/foo-bar/config',
+    '.yml'
+);
+
+// "/Foo/Bar/Baz/Qux/" => "/path/to/foo-bar/resources/Baz/Qux/"
+transform(
+    '/Foo/Bar/Baz/Qux',
+    '/Foo/Bar',
+    '/',
+    '/path/to/foo-bar/resources'
+);
+```
+
+The Path Matching PSR then uses the Transformation PSR internally. While the
+transformation algorithm is responsible for simple string replacements, the
+matching algorithm specifies what a "path mapping" is and how to use it for
+finding files on the file system. See [this modified proposal]
+(https://github.com/bschussek/fig-standards/blob/path-matching-v2/proposed/path-matching.md)
+for a detailed example.
+
+Pros:
+
+* the path transformation is reusable
+* compatibility with PSR-X
+* compatibility with the current version of the PSR-R proposal
+
+Cons:
+
+* two more PSRs that need to be ratified before PSR-X
 
 5. People
 ---------
