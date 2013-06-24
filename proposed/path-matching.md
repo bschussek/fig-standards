@@ -34,15 +34,16 @@ slash ("/").
 
 **(Logical) Path**: A sequence of zero or more path segments, divided by
 separators and starting with a separator. Given the separator "/", then `/`,
-`/A`, `/A/` and `/A/B` are valid paths.
-
-**File System Path**: A path to a file or directory on the file system.
+`/A`, `/A/B` and `/A/B/C` are valid paths.
 
 > E.g. a namespace (\Acme\Demo\Parser) or a URI path (/acme/demo-package/config)
 
-**Path Prefix**: Given a path, then a path prefix is any prefix of the path
-that ends with a separator. For example, given the separator "/" and the path
-`/A/B/C`, then `/`, `/A/` and `/A/B/` are valid path prefixes.
+**File System Path**: A path to a file or directory on the file system.
+
+**Prefix Path**: Given a path, then a prefix path is any prefix of the path
+that is followed by a separator. The single `/` is always a prefix path. For
+example, given the separator "/" and the path `/A/B/C`, then `/`, `/A` and
+`/A/B` are valid prefix paths.
 
 **Path Mapping**: A set of logical paths, each of which is associated with one
 or more file system paths. Given a path mapping, we call the logical paths in the
@@ -69,11 +70,11 @@ given the separator "/", the path `/A/B/C/D` and a path mapping which associates
 > The full path itself can be mapped. Needed in the resource location PSR to
 > look up the directories that a namespace is mapped to.
 
-Given a logical path and a path mapping which associates any of the path's
-prefixes with one or more base paths, then a potential match is generated for
+Given a logical path and a path mapping which associates any of its prefix
+paths with one or more base paths, then a potential match is generated for
 each base path by applying the [Path Transformation algorithm described in PSR-?]
 (https://github.com/pmjones/fig-leaf/blob/master/transform-logical-paths.md),
-on the logical path, the prefix, the separator and the base path. The result
+on the logical path, the prefix path, the separator and the base path. The result
 is a potential match.
 
 Separators in potential matches MUST be replaced by directory separators.
@@ -87,14 +88,14 @@ exists on the file system, then only `/src/C/D` is a match.
 
 > Matches must exist.
 
-If both a full path and any of its prefixes are mapped, potential matches
-for the full path MUST be evaluated before those for the prefixes. If a mapped
-path contains multiple mapped prefixes, potential matches for longer prefixes
-MUST be evaluated before those for shorter prefixes. 
+If both a full path and any of its prefix paths are mapped, potential matches
+for the full path MUST be evaluated before those for the prefix paths. If a
+mapped path contains multiple mapped prefix paths, potential matches for longer
+prefix paths MUST be evaluated before those for shorter prefix paths.
 
 > Define order of evaluation..
 
-If a prefix is mapped to multiple base paths, the potential matches MUST be
+If a path is mapped to multiple base paths, the potential matches MUST be
 evaluated in the order of the base paths.
 
 > When multiple implementations of this algorithm (e.g. PSR-X and PSR-R)
@@ -119,8 +120,8 @@ Backus-Naur Form (EBNF) specified in ISO/IEC 14977.
 separator     = chosen separator character
 path-symbol   = all characters - separator
 path-segment  = path-symbol, {path-symbol}
-path-prefix   = separator, {path-segment, separator}
-path          = path-prefix, [path-segment, {separator, path-segment}]
+prefix-path   = separator, {path-segment, separator}
+path          = prefix-path, [path-segment, {separator, path-segment}]
 ```
 
 2. Package
@@ -153,18 +154,18 @@ function match_path($path, array $path_mappings, $separator)
     $path_length = strlen($path);
     
     // first see if the complete path is mapped
-    $path_prefix = $path;
+    $prefix_path = $path;
 
-    // the reverse offset of the separator following the path prefix
+    // the reverse offset of the separator following the prefix path
     $cursor = -1;
     
     while (true) {
-        // are there any base paths for this path prefix?
-        if (isset($path_mappings[$path_prefix])) {
-            // look through base paths for this path prefix
-            foreach ((array) $path_mappings[$path_prefix] as $base_path) {
+        // are there any base paths for this prefix path?
+        if (isset($path_mappings[$prefix_path])) {
+            // look through base paths for this prefix path
+            foreach ((array) $path_mappings[$prefix_path] as $base_path) {
                 // create a potential match using a PSR-? transformation
-                $potential_match = transform($path, $path_prefix, $separator, $base_path);
+                $potential_match = transform($path, $prefix_path, $separator, $base_path);
                 
                 // can we read the file from the file system?
                 if (is_readable($potential_match)) {
@@ -176,16 +177,16 @@ function match_path($path, array $path_mappings, $separator)
         
         // once the cursor tested the first character, the
         // algorithm terminates
-        if ($path_prefix === $separator) {
+        if ($prefix_path === $separator) {
             return;
         }
         
         // place the cursor on the next separator to the left
         $cursor = strrpos($path, $separator, $cursor - 1) - $path_length;
 
-        // the path prefix is the part left of and including
-        // the cursor, e.g. "/Acme/Demo/"
-        $path_prefix = substr($path, 0, $cursor + 1);
+        // the prefix path is the part left of the cursor, e.g. "/Acme/Demo"
+        // "/" is also a prefix path
+        $prefix_path = substr($path, 0, max($cursor, -$path_length + 1));
     }
 }
 ```
