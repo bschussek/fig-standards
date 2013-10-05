@@ -79,8 +79,8 @@ such that any compliant autoloader can load the classes of that library.
    > that don't satisfy this rule.
 
 
-4. Example Autoloader Implementations
--------------------------------------
+4. Example Autoloaders
+----------------------
 
 For example implementations of a compliant autoloader, please see [the relevant
 wiki page][]. Example implementations MUST NOT be regarded as part of the
