@@ -25,8 +25,8 @@ such that any compliant autoloader can load the classes of that library.
 
 - **autoloadable namespace**: A namespace which contains autoloadable classes.
 
-- **root namespace**: The shortest common namespace of all autoloadable classes
-  of a library.
+- **root namespace**: The shortest common namespace of a set of autoloadable
+  classes of a library.
 
 - **fully qualified name**: The full class or namespace name, including the
   leading namespace separator. (This is per the
@@ -46,19 +46,37 @@ such that any compliant autoloader can load the classes of that library.
 3. Specification
 ----------------
 
-1. A library MUST have exactly one root namespace.
+1. A library MUST have at least one root namespace.
 
-2. The root namespace MUST have exactly one corresponding directory in the
+   > Allow multiple root namespaces, for example:
+   >
+   > * Acme\Package -> src/
+   > * Acme\Test\Package -> test/
+
+2. Each autoloadable class MUST belong to one of the root namespaces.
+
+3. Each root namespace MUST have exactly one corresponding directory in the
    library. This directory MAY be the library root itself.
 
-3. Each autoloadable namespace below the root namespace MUST have exactly one
+4. A root namespace's corresponding directory MUST NOT be contained in another
+   root namespace's corresponding directory.
+
+5. Each autoloadable namespace below the root namespace MUST have exactly one
    corresponding directory in the library. That directory MUST be a subdirectory
    of the parent namespace's corresponding directory. The directory name MUST
    equal the namespace's unqualified name.
 
-4. Each autoloadable class MUST be contained in a file located in the
+   > Inductive definition of the namespace->directory mapping.
+   >
+   > We focus on namespaces with autoloadable classes only. Frameworks can do
+   > whatever they want with other namespaces.
+
+6. Each autoloadable class MUST be contained in a file located in the
    corresponding directory of the class' namespace. The file name MUST equal the
    class' unqualified name suffixed with `.php`.
+
+   > Again we focus on autoloadable classes. A library may contain other classes
+   > that don't satisfy this rule.
 
 
 4. Example Autoloader Implementations
