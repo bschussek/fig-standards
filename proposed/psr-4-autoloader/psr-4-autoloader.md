@@ -26,7 +26,7 @@ registered autoloader.
 
 - **namespace name**: Given a _fully qualified class name_ of
   `\Foo\Bar\Baz\Qux`, the _namespace names_ are `Foo`, `Bar`, and `Baz`.
-  
+
 - **namespace prefix**: Given a _fully qualified class name_ of
   `\Foo\Bar\Baz\Qux`, the _namespace prefix_ may be `\Foo\`, `\Foo\Bar\`, or
   `\Foo\Bar\Baz\`.
@@ -37,8 +37,12 @@ registered autoloader.
   class name_ is `Baz\Qux`.
 
 - **base directory**: The directory path in the file system where the files
-  for _relative class names_ have their root. Given a namespace prefix of 
+  for _relative class names_ have their root. Given a namespace prefix of
   `\Foo\Bar\`, the _base directory_ could be `/path/to/packages/foo-bar/src`.
+
+> This rule speaks about the file system of the *end user*. This is out of scope
+> of the PSR. Instead it should speak of directories relative to our (the FW
+> developers') libraries.
 
 - **mapped file name**: The path in the file system resulting from the
   transformation of a _fully qualified class name_. Given a _fully qualified
@@ -62,19 +66,33 @@ correspond to a base directory.
 
 A namespace prefix MAY correspond to more than one base directory.
 
+> In scope if we choose approach A (i.e. we specify what a mapping looks like)
+> but not if we choose approach B.
+
 ### 3.2. Registered Autoloaders
 
 The registered autoloader MUST transform the fully qualified class name
 using the rules in section 3.3. The result MUST be suffixed with `.php` to
 generate a mapped file name.
 
+> Internal implementation details of the autoloader. Out of scope.
+
 If the mapped file name exists in the file system, the registered autoloader
 MUST include or require it.
+
+> Implementation detail, out of scope.
 
 The registered autoloader MUST NOT throw exceptions, MUST NOT raise errors of
 any level, and SHOULD NOT return a value.
 
+> Implementation detail, out of scope.
+
 ### 3.3. Transformation
+
+> All of the below rules address the internal implementation details of an
+> autoloader. That's none of our business. Instead, we should be talking about
+> how *we* structure our files and how *we* map namespaces prefixes to directories
+> within our libraries.
 
 Given a fully qualified class name, a namespace prefix, and a base directory
 that corresponds with that namespace prefix ...
