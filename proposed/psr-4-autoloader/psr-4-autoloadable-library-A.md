@@ -79,8 +79,8 @@ such that any compliant autoloader can load the classes of that library.
 
    > Allow the following:
    >
-   > Acme\ -> src/
-   > Acme\Test\ -> test/
+   > * Acme\ -> src/
+   > * Acme\Test\ -> test/
 
 6. Each autoloadable class MUST be contained in a file located in the
    corresponding directory of the class' namespace. The file name MUST equal the
