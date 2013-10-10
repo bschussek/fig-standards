@@ -31,8 +31,8 @@ such that any compliant autoloader can load the classes of that library.
 
 - **Autoloadable Namespace**: A namespace which contains autoloadable classes.
 
-- **Base Namespace**: The longest common namespace of a set of autoloadable
-  classes of a library.
+- **Base Namespace**: A common namespace of a set of autoloadable classes of a
+  library.
 
 - **Fully Qualified Name**: The full class or namespace name, including the
   leading namespace separator. (This is per the
