@@ -23,9 +23,13 @@ such that any compliant autoloader can load the classes of that library.
 
 - **namespace**: A PHP namespace.
 
+  > Note: `\` is *not* a namespace. It is the global space.
+  >
+  > A valid PHP namespace is anything that may follow the "namespace" keyword.
+
 - **autoloadable namespace**: A namespace which contains autoloadable classes.
 
-- **root namespace**: The shortest common namespace of a set of autoloadable
+- **base namespace**: The longest common namespace of a set of autoloadable
   classes of a library.
 
 - **fully qualified name**: The full class or namespace name, including the
@@ -48,22 +52,22 @@ such that any compliant autoloader can load the classes of that library.
 
 ### 3.1 Directory Structure
 
-1. A library MUST have at least one root namespace.
+1. A library MUST have at least one base namespace.
 
-   > Allow multiple root namespaces, for example:
+   > Allow multiple base namespaces, for example:
    >
    > * Acme\Package -> src/
    > * Acme\Test\Package -> test/
 
-2. Each autoloadable class MUST belong to one of the root namespaces.
+2. Each autoloadable class MUST belong to one of the base namespaces.
 
-3. Each root namespace MUST have exactly one corresponding directory in the
+3. Each base namespace MUST have exactly one corresponding directory in the
    library. This directory MAY be the library root itself.
 
-4. A root namespace's corresponding directory MUST NOT be contained in another
-   root namespace's corresponding directory.
+4. A base namespace's corresponding directory MUST NOT be contained in another
+   base namespace's corresponding directory.
 
-5. Each autoloadable namespace below a root namespace MUST have exactly one
+5. Each autoloadable namespace below a base namespace MUST have exactly one
    corresponding directory in the library. That directory MUST be a subdirectory
    of the parent namespace's corresponding directory. The directory name MUST
    equal the namespace's unqualified name.
@@ -83,7 +87,7 @@ such that any compliant autoloader can load the classes of that library.
 ### 3.2 Namespace Mapping
 
 > This section should specify how compliant libraries should expose
-> their root namespace->directory mapping. There are various options for this,
+> their base namespace->directory mapping. There are various options for this,
 > such as a `namespace.php`, `namespace.json` or `namespace.yaml` file in the
 > library's root directory.
 >
