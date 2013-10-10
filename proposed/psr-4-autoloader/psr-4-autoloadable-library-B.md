@@ -62,10 +62,7 @@ such that any compliant autoloader can load the classes of that library.
 3. Each base namespace MUST have exactly one corresponding directory in the
    library. This directory MAY be the library root itself.
 
-4. A base namespace's corresponding directory MUST NOT be contained in another
-   base namespace's corresponding directory.
-
-5. Each autoloadable namespace below a base namespace MUST have exactly one
+4. Each autoloadable namespace below a base namespace MUST have exactly one
    corresponding directory in the library. That directory MUST be a subdirectory
    of the parent namespace's corresponding directory. The directory name MUST
    equal the namespace's unqualified name.
@@ -74,6 +71,13 @@ such that any compliant autoloader can load the classes of that library.
    >
    > We focus on namespaces with autoloadable classes only. Frameworks can do
    > whatever they want with other namespaces.
+
+5. Rule 4 does not apply to base namespaces below other base namespaces.
+
+   > Allow the following:
+   >
+   > Acme\ -> src/
+   > Acme\Test\ -> test/
 
 6. Each autoloadable class MUST be contained in a file located in the
    corresponding directory of the class' namespace. The file name MUST equal the
