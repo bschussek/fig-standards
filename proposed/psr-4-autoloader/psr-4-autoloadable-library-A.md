@@ -62,7 +62,8 @@ such that any compliant autoloader can load the classes of that library.
 2. Each autoloadable class MUST belong to one of the base namespaces.
 
 3. Each base namespace MUST have exactly one corresponding directory in the
-   library. This directory MAY be the library root itself.
+   library. This directory MAY be the library root itself. The library developer
+   SHOULD document which base namespace corresponds to which directory.
 
 4. Each autoloadable namespace below a base namespace MUST have exactly one
    corresponding directory in the library. That directory MUST be a subdirectory
