@@ -61,7 +61,7 @@ such that any compliant autoloader can load the classes of that library.
 4. A root namespace's corresponding directory MUST NOT be contained in another
    root namespace's corresponding directory.
 
-5. Each autoloadable namespace below the root namespace MUST have exactly one
+5. Each autoloadable namespace below a root namespace MUST have exactly one
    corresponding directory in the library. That directory MUST be a subdirectory
    of the parent namespace's corresponding directory. The directory name MUST
    equal the namespace's unqualified name.
