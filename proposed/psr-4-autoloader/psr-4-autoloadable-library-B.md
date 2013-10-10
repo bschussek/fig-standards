@@ -16,6 +16,8 @@ such that any compliant autoloader can load the classes of that library.
 2. Definitions
 --------------
 
+- **Library**: A directory which contains PHP code.
+
 - **Class**: A PHP class, interface or trait.
 
 - **Autoloadable Class**: A class which is intended to be loaded by an
@@ -50,7 +52,10 @@ such that any compliant autoloader can load the classes of that library.
 3. Specification
 ----------------
 
-1. A library MUST have at least one base namespace.
+A library is a PSR-4 compliant "Autoloadable Library" it satisfies the
+following rules:
+
+1. The library MUST have at least one base namespace.
 
    > Allow multiple base namespaces, for example:
    >
