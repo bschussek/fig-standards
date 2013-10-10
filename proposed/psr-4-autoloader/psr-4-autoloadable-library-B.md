@@ -16,32 +16,32 @@ such that any compliant autoloader can load the classes of that library.
 2. Definitions
 --------------
 
-- **class**: A PHP class, interface or trait.
+- **Class**: A PHP class, interface or trait.
 
-- **autoloadable class**: A class which is intended to be loaded by an
+- **Autoloadable Class**: A class which is intended to be loaded by an
   autoloader.
 
-- **namespace**: A PHP namespace.
+- **Namespace**: A PHP namespace.
 
   > Note: `\` is *not* a namespace. It is the global space.
   >
   > A valid PHP namespace is anything that may follow the "namespace" keyword.
 
-- **autoloadable namespace**: A namespace which contains autoloadable classes.
+- **Autoloadable Namespace**: A namespace which contains autoloadable classes.
 
-- **base namespace**: The longest common namespace of a set of autoloadable
+- **Base Namespace**: The longest common namespace of a set of autoloadable
   classes of a library.
 
-- **fully qualified name**: The full class or namespace name, including the
+- **Fully Qualified Name**: The full class or namespace name, including the
   leading namespace separator. (This is per the
   [Name Resolution Rules](http://php.net/manual/en/language.namespaces.rules.php)
   from the PHP manual.)
 
-- **unqualified name**: The part of a fully qualified name that succeeds the
+- **Unqualified Name**: The part of a fully qualified name that succeeds the
   last namespace separator. Given a fully qualified name of `\Foo\Bar\Baz\Qux`,
   the unqualified name is `Qux`.
 
-- **parent namespace**: The part of a fully qualified namespace name that
+- **Parent Namespace**: The part of a fully qualified namespace name that
   precedes the last namespace separator. Given a namespace of
   `\Foo\Bar\Baz\Qux`, the parent namespace is `\Foo\Bar\Baz`. Namespaces with
   only one namespace separator don't have a parent namespace.
