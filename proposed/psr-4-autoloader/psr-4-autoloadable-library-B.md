@@ -31,9 +31,6 @@ such that any compliant autoloader can load the classes of that library.
 
 - **Autoloadable Namespace**: A namespace which contains autoloadable classes.
 
-- **Base Namespace**: A common namespace of a set of autoloadable classes of a
-  library.
-
 - **Fully Qualified Name**: The full class or namespace name, including the
   leading namespace separator. (This is per the
   [Name Resolution Rules](http://php.net/manual/en/language.namespaces.rules.php)
@@ -55,17 +52,9 @@ such that any compliant autoloader can load the classes of that library.
 A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
 following rules:
 
-1. The library MUST have at least one base namespace.
-
-   > Allow multiple base namespaces, for example:
-   >
-   > * Acme\Package -> src/
-   > * Acme\Test\Package -> test/
-
-2. Each autoloadable class MUST belong to one of the base namespaces.
-
-3. The library MUST document how to find the "corresponding directory" for each
-   base namespace. This directory MAY be the library root itself.
+1. The library MUST document how to find the "corresponding directory" for at
+   least one namespace. Such a namespace is called a "base namespace". The
+   corresponding directory MAY be the library root itself.
 
    > *How* this correspondence is documented is up to the developer. Examples:
    >
@@ -74,7 +63,7 @@ following rules:
    > * PHP source code
    > * conventions (Drupal modules)
 
-4. Each autoloadable namespace below a base namespace MUST have exactly one
+2. Each autoloadable namespace within a base namespace MUST have exactly one
    corresponding directory. That directory MUST be a subdirectory of the parent
    namespace's corresponding directory. The directory name MUST equal the
    namespace's unqualified name.
@@ -84,14 +73,16 @@ following rules:
    > We focus on namespaces with autoloadable classes only. Frameworks can do
    > whatever they want with other namespaces.
 
-5. Rule 4 does not apply to base namespaces below other base namespaces.
+3. Rule 2 does not apply to base namespaces within other base namespaces.
 
    > Allow the following:
    >
    > * Acme\ -> src/
    > * Acme\Test\ -> test/
 
-6. Each autoloadable class MUST be contained in a file located in the
+4. Each autoloadable class MUST belong to one of the base namespaces.
+
+5. Each autoloadable class MUST be contained in a file located in the
    corresponding directory of the class' namespace. The file name MUST equal the
    class' unqualified name suffixed with `.php`.
 
