@@ -75,9 +75,9 @@ following rules:
    > * conventions (Drupal modules)
 
 4. Each autoloadable namespace below a base namespace MUST have exactly one
-   corresponding directory in the library. That directory MUST be a subdirectory
-   of the parent namespace's corresponding directory. The directory name MUST
-   equal the namespace's unqualified name.
+   corresponding directory. That directory MUST be a subdirectory of the parent
+   namespace's corresponding directory. The directory name MUST equal the
+   namespace's unqualified name.
 
    > Inductive definition of the namespace->directory mapping.
    >
