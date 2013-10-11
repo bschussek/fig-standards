@@ -64,21 +64,15 @@ following rules:
 
 2. Each autoloadable class MUST belong to one of the base namespaces.
 
-3. Each base namespace MUST have exactly one corresponding directory in the
-   library. This directory MAY be the library root itself. The library MUST
-   document which base namespace corresponds to which directory or follow
-   a documented convention.
+3. The library MUST document how to find the "corresponding directory" for each
+   base namespace. This directory MAY be the library root itself.
 
-   > *How* this correspondence is documented is up to the developer. Valid
-   > examples:
+   > *How* this correspondence is documented is up to the developer. Examples:
    >
    > * end user documentation
    > * composer.json
    > * PHP source code
-   >
-   > An example for "documented convention" is Drupal modules, which must
-   > contain specific .yml files and build the base namespace->directory
-   > relationship from that.
+   > * conventions (Drupal modules)
 
 4. Each autoloadable namespace below a base namespace MUST have exactly one
    corresponding directory in the library. That directory MUST be a subdirectory
