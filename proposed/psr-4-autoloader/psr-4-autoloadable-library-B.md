@@ -52,7 +52,7 @@ such that any compliant autoloader can load the classes of that library.
 3. Specification
 ----------------
 
-A library is a PSR-4 compliant "Autoloadable Library" it satisfies the
+A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
 following rules:
 
 1. The library MUST have at least one base namespace.
