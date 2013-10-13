@@ -91,9 +91,9 @@ rules in PSR-0.
 A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
 following rules:
 
-1. The library MUST document how to find the corresponding directory for at
-   least one namespace. Such a namespace is called a "base namespace". The
-   corresponding directory MAY be the library root itself.
+1. The library MUST document how to find one or more corresponding directories
+   for at least one namespace. Such a namespace then becomes a base namespace.
+   The corresponding directory MAY be the library root itself.
 
    > *How* this correspondence is documented is up to the developer. Examples:
    >
