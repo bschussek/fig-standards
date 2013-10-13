@@ -77,10 +77,10 @@ rules in PSR-0.
 - An "Autoloadable Namespace" is a namespace which contains autoloadable
   classes.
 
-- The "Corresponding Directory" of an autoloadable namespace is the directory
-  that contains the PHP files defining the autoloadable classes within that
-  namespace. The location of that directory is given as a relative path from
-  the root of the containing library.
+- The "Corresponding Directory" of a namespace is the directory that contains
+  the PHP files defining the autoloadable classes within that namespace. The
+  location of that directory is given as a relative path from the root of the
+  containing library.
 
 - A "Base Namespace" is a namespace for which a corresponding directory is
   explicitly defined.
@@ -131,24 +131,24 @@ following rules:
 6. Example Algorithm
 --------------------
 
-Autoloaders MAY choose any algorithm of their choice to locate files for the
-classes within an autoloadable library. The following is an example algorithm
-for transforming a fully qualified class name into a file location:
+Autoloaders are free to choose any algorithm of their choice to locate files
+for the classes within an autoloadable library. The following is an example
+algorithm for transforming a fully qualified class name into a file location:
 
-1. Remove the preceding namespace separators of the given fully qualified class
+1. Remove any preceding namespace separator of the given fully qualified class
    name.
 
 2. Match the beginning of the fully qualified class name against the documented
    base namespaces.
 
-3. When the base namespace is found, replace it by its corresponding directory.
+3. When a matching base namespace is found, replace it by one of the namespace's
+   corresponding directories.
 
-3. Replace all namespace separators with the separators for the respective
-   location scheme; in case of physical files these separators are the directory
-   separators for the respective operating system.
+3. Replace all remaining namespace separators with the directory separators of
+   the respective operating system.
 
 4. Suffix the result with the string `.php`
 
-The result is the name of a PHP file relative to the root of a library. If the
-autoloader knows the location of that library, it can successfully load the
-file now.
+The result is the path to a PHP file relative to the root of the library. If the
+autoloader knows the location of that library, it can successfully load the file
+now.
