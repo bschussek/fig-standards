@@ -88,6 +88,12 @@ rules in PSR-0.
 5. Specification
 ----------------
 
+This specification establishes a relationship between the fully qualified class
+names of a library and the PHP files that contain their class definition. It
+does so by first associating namespaces with their corresponding directories.
+Then the specification describes how to find a class file in the corresponding
+directory of the class' namespace.
+
 A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
 following rules:
 
