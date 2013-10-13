@@ -54,8 +54,12 @@ rules in PSR-0.
   [PHP "namespace" keyword](http://www.php.net/manual/en/language.namespaces.definition.php).
   `\` is not a valid namespace.
 
+- "Namespace Separator" refers to the symbol `\` (backslash).
+
 - A "Fully Qualified Name" refers to the full identifier of a namespace or a
   class, as defined by [PHP's name resolution rules](http://php.net/manual/en/language.namespaces.rules.php).
+  For the scope of this specification, fully qualified names always include the
+  leading namespace separator.
 
 - The "Unqualified Name" is the part of a fully qualified name that succeeds the
   last namespace separator. Given a fully qualified name of `\Foo\Bar\Baz\Qux`,
@@ -123,8 +127,8 @@ following rules:
 
    > Allow the following:
    >
-   > * Acme\ -> src/
-   > * Acme\Test\ -> test/
+   > * \Acme\ -> src/
+   > * \Acme\Test\ -> test/
 
 4. Each autoloadable class MUST belong to one of the base namespaces.
 
