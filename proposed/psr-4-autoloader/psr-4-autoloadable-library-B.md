@@ -90,9 +90,10 @@ rules in PSR-0.
 
 This specification establishes a relationship between the fully qualified class
 names of a library and the PHP files that contain their class definition. It
-does so by first associating namespaces with their corresponding directories.
-Then the specification describes how to find a class file in the corresponding
-directory of the class' namespace.
+does so by first associating the autoloadable namespaces of the library with
+their corresponding directories (rules 1-3). Then the specification describes
+where a file that contains an autoloadable class should be located and how it
+should be named (rules 4-5).
 
 A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
 following rules:
