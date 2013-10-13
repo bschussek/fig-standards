@@ -82,8 +82,8 @@ rules in PSR-0.
   location of that directory is given as a relative path from the root of the
   containing library.
 
-- A "Base Namespace" is a namespace for which a corresponding directory is
-  explicitly defined.
+- A "Base Namespace" within the scope of a library is a namespace for which a
+  corresponding directory is explicitly defined.
 
 5. Specification
 ----------------
