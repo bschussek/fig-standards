@@ -98,10 +98,11 @@ rules in PSR-0.
 
 This specification establishes a relationship between the fully qualified class
 names of a code base and the PHP files that contain their class definition. It
-does so by first associating the autoloadable namespaces of the code base with
-their corresponding directories (rules 1-5). Then the specification describes
-where a file that contains an autoloadable class should be located and how it
-should be named (rules 6-7).
+does so by first associating the base namespaces of the code base with their
+corresponding directories (rules 1-3). Then, the nested namespaces within these
+base namespaces are recursively associated with nested directories (rules 4-5).
+At last, the specification describes where a file that contains an autoloadable
+class should be located and how it should be named (rules 6-7).
 
 A PSR-4 compliant autoloadable code base MUST satisfy the following rules:
 
