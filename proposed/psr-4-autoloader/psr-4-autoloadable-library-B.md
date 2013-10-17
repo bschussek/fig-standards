@@ -107,7 +107,7 @@ A PSR-4 compliant autoloadable code base MUST satisfy the following rules:
 
 1. The code base MUST document how to find one or more corresponding directories
    for at least one namespace. Such a namespace then becomes a base namespace.
-   The specific approach of the documentation is left to the developer. Valid
+   The specific manner of this documentation is left to the developer. Valid
    examples are narrative text, meta-files, PHP source code, project-specific
    conventions, or some other approach.
 
