@@ -45,7 +45,7 @@ rules in PSR-0.
 --------------
 
 - A "Code Base" is a directory which contains PHP code. A code base can contain
-  other code bases. In practice, multiple other terms exist for this or similar
+  nested code bases. In practice, multiple other terms exist for this or similar
   concepts, such as "Application", "Library", "Package" or "Module".
 
 - "Class" refers to a PHP class, interface or trait.
@@ -87,7 +87,8 @@ rules in PSR-0.
   containing code base.
 
 - A "Base Namespace" within the scope of a code base is a namespace for which a
-  corresponding directory is explicitly defined.
+  corresponding directory is explicitly defined. The base namespaces of nested
+  code bases are not covered by this definition.
 
 5. Specification
 ----------------
