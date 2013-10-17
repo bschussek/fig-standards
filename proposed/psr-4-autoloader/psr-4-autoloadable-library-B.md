@@ -1,5 +1,5 @@
-PSR-4: Autoloadable Code Base
-=============================
+PSR-4: Class Autoloading
+========================
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
@@ -47,6 +47,9 @@ rules in PSR-0.
 - A "Code Base" is a directory which contains PHP code. A code base can contain
   nested code bases. In practice, multiple other terms exist for this or similar
   concepts, such as "Application", "Library", "Package" or "Module".
+
+- An "Autoloadable Code Base" is a code base which complies with the rules
+  described in section 4.
 
 - "Class" refers to a PHP class, interface or trait.
 
@@ -100,7 +103,7 @@ their corresponding directories (rules 1-5). Then the specification describes
 where a file that contains an autoloadable class should be located and how it
 should be named (rules 6-7).
 
-A code base is a PSR-4 compliant "Autoloadable Code Base" if it satisfies the
+A code base is a PSR-4 compliant autoloadable code base if it satisfies the
 following rules:
 
 1. The code base MUST document how to find one or more corresponding directories
