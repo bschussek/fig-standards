@@ -143,7 +143,47 @@ A PSR-4 compliant autoloadable code base MUST satisfy the following rules:
    > Again we focus on autoloadable classes. A code base may contain other
    > classes that don't satisfy this rule.
 
-5. Example Algorithm
+5. Example Code Base
+--------------------
+
+The following snippet contains the autoloadable class names of a sample code
+base:
+
+     \Acme\AddressBook\AddressBook
+     \Acme\AddressBook\Controller\ContactController
+     \Acme\AddressBook\View\ContactView
+     \Acme\AddressBook\Test\AddressBookTest
+
+The developer chose to document the base namespaces and their corresponding
+directories in the `README.txt` file bundled with the project:
+
+> This application is PSR-4 compliant. The base namespaces and their
+> corresponding directories are:
+>
+> * `\Acme\AddressBook` => `/app/`
+> * `\Acme\AddressBook\Test` => `/test/`
+
+The directory structure of the project must then look like the following:
+
+    app/
+        Controller/
+            ContactController.php
+        View/
+            ContactView.php
+        AddressBook.php
+    test/
+        AddressBookTest.php
+    vendor/
+        monolog/
+            src/
+                Logger.php
+    README.txt
+
+This example also contains a nested code base under `/vendor/monolog/`. How the
+autoloading works for this code base and whether or not it is PSR-4 compliant
+is irrelevant.
+
+6. Example Algorithm
 --------------------
 
 Autoloaders are free to choose any algorithm of their choice to locate files
