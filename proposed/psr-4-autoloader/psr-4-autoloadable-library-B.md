@@ -183,8 +183,8 @@ This example also contains a nested code base under `/vendor/monolog/`. How the
 autoloading works for this code base and whether or not it is PSR-4 compliant
 is irrelevant.
 
-6. Example Algorithm
---------------------
+6. Example Autoloader Algorithm
+-------------------------------
 
 Autoloaders are free to choose any algorithm of their choice to locate files
 for the classes within an autoloadable code base. The following is an example
