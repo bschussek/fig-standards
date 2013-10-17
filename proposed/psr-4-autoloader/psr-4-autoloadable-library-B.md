@@ -95,9 +95,9 @@ rules in PSR-0.
 This specification establishes a relationship between the fully qualified class
 names of a library and the PHP files that contain their class definition. It
 does so by first associating the autoloadable namespaces of the library with
-their corresponding directories (rules 1-3). Then the specification describes
+their corresponding directories (rules 1-4). Then the specification describes
 where a file that contains an autoloadable class should be located and how it
-should be named (rules 4-5).
+should be named (rules 5-6).
 
 A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
 following rules:
@@ -113,7 +113,10 @@ following rules:
    > * PHP source code
    > * conventions (Drupal modules)
 
-2. Each autoloadable namespace within a base namespace MUST have exactly one
+2. To prevent conflicts, different base namespaces SHOULD NOT correspond to the
+   same directory.
+
+3. Each autoloadable namespace within a base namespace MUST have exactly one
    corresponding directory. That directory MUST be a subdirectory of the parent
    namespace's corresponding directory. The directory name MUST equal the
    namespace's unqualified name.
@@ -123,16 +126,16 @@ following rules:
    > We focus on namespaces with autoloadable classes only. Frameworks can do
    > whatever they want with other namespaces.
 
-3. Rule 2 does not apply to base namespaces within other base namespaces.
+4. Rule 3 does not apply to base namespaces within other base namespaces.
 
    > Allow the following:
    >
    > * \Acme\ -> src/
    > * \Acme\Test\ -> test/
 
-4. Each autoloadable class MUST belong to one of the base namespaces.
+5. Each autoloadable class MUST belong to one of the base namespaces.
 
-5. Each autoloadable class MUST be contained in a file located in the
+6. Each autoloadable class MUST be contained in a file located in the
    corresponding directory of the class' namespace. The file name MUST equal the
    class' unqualified name suffixed with `.php`.
 
