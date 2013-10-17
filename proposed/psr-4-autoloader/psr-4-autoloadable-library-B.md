@@ -129,7 +129,7 @@ A PSR-4 compliant autoloadable code base MUST satisfy the following rules:
 
 5. Rule 4 does not apply to base namespaces within other base namespaces.
 
-   > This is necessary to allow the following use case:
+   > This is necessary to support the following use case:
    >
    > * \Acme\ -> src/
    > * \Acme\Test\ -> test/
