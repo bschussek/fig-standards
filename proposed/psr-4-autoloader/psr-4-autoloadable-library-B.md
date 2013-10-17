@@ -175,13 +175,15 @@ The directory structure of the project must then look like the following:
         AddressBookTest.php
     vendor/
         monolog/
+            doc/
             src/
                 Logger.php
     README.txt
 
-This example also contains a nested code base under `/vendor/monolog/`. How the
-autoloading works for this code base and whether or not it is PSR-4 compliant
-is irrelevant.
+This example also contains a nested code base under `/vendor/monolog/`. Since no
+base namespace was mapped to that directory or any of its subdirectories, its
+autoloading mechanism and whether or not that code base is PSR-4 compliant is
+irrelevant here.
 
 6. Example Autoloader Algorithm
 -------------------------------
