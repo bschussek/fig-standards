@@ -1,5 +1,5 @@
-PSR-4: Autoloadable Library
-===========================
+PSR-4: Autoloadable Code Base
+=============================
 
 1. Introduction
 ---------------
@@ -44,9 +44,9 @@ rules in PSR-0.
 4. Definitions
 --------------
 
-- A "Library" is a directory which contains PHP code. A library can contain
-  other libraries. In practice, multiple other terms exist for this or similar
-  concepts, such as "Application", "Package" or "Module".
+- A "Code Base" is a directory which contains PHP code. A code base can contain
+  other code bases. In practice, multiple other terms exist for this or similar
+  concepts, such as "Application", "Library", "Package" or "Module".
 
 - "Class" refers to a PHP class, interface or trait.
 
@@ -84,27 +84,27 @@ rules in PSR-0.
 - The "Corresponding Directory" of a namespace is the directory that contains
   the PHP files defining the autoloadable classes within that namespace. The
   location of that directory is given as a relative path from the root of the
-  containing library.
+  containing code base.
 
-- A "Base Namespace" within the scope of a library is a namespace for which a
+- A "Base Namespace" within the scope of a code base is a namespace for which a
   corresponding directory is explicitly defined.
 
 5. Specification
 ----------------
 
 This specification establishes a relationship between the fully qualified class
-names of a library and the PHP files that contain their class definition. It
-does so by first associating the autoloadable namespaces of the library with
+names of a code base and the PHP files that contain their class definition. It
+does so by first associating the autoloadable namespaces of the code base with
 their corresponding directories (rules 1-4). Then the specification describes
 where a file that contains an autoloadable class should be located and how it
 should be named (rules 5-6).
 
-A library is a PSR-4 compliant "Autoloadable Library" if it satisfies the
+A code base is a PSR-4 compliant "Autoloadable Code Base" if it satisfies the
 following rules:
 
-1. The library MUST document how to find one or more corresponding directories
+1. The code base MUST document how to find one or more corresponding directories
    for at least one namespace. Such a namespace then becomes a base namespace.
-   The corresponding directory MAY be the library root itself.
+   The corresponding directory MAY be the root of the code base itself.
 
    > *How* this correspondence is documented is up to the developer. Examples:
    >
@@ -139,14 +139,14 @@ following rules:
    corresponding directory of the class' namespace. The file name MUST equal the
    class' unqualified name suffixed with `.php`.
 
-   > Again we focus on autoloadable classes. A library may contain other classes
-   > that don't satisfy this rule.
+   > Again we focus on autoloadable classes. A code base may contain other
+   > classes that don't satisfy this rule.
 
 6. Example Algorithm
 --------------------
 
 Autoloaders are free to choose any algorithm of their choice to locate files
-for the classes within an autoloadable library. The following is an example
+for the classes within an autoloadable code base. The following is an example
 algorithm for transforming a fully qualified class name into a file location:
 
 1. Remove any preceding namespace separator of the given fully qualified class
@@ -163,6 +163,6 @@ algorithm for transforming a fully qualified class name into a file location:
 
 4. Suffix the result with the string `.php`
 
-The result is the path to a PHP file relative to the root of the library. If the
-autoloader knows the location of that library, it can successfully load the file
-now.
+The result is the path to a PHP file relative to the root of the code base. If
+the autoloader knows the location of that code base, it can successfully load
+the file now.
