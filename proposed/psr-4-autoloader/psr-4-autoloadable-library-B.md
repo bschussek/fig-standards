@@ -95,28 +95,25 @@ rules in PSR-0.
 This specification establishes a relationship between the fully qualified class
 names of a code base and the PHP files that contain their class definition. It
 does so by first associating the autoloadable namespaces of the code base with
-their corresponding directories (rules 1-4). Then the specification describes
+their corresponding directories (rules 1-5). Then the specification describes
 where a file that contains an autoloadable class should be located and how it
-should be named (rules 5-6).
+should be named (rules 6-7).
 
 A code base is a PSR-4 compliant "Autoloadable Code Base" if it satisfies the
 following rules:
 
 1. The code base MUST document how to find one or more corresponding directories
    for at least one namespace. Such a namespace then becomes a base namespace.
-   The corresponding directory MAY be the root of the code base itself.
+   The specific approach of the documentation is left to the developer. Valid
+   examples are narrative text, meta-files, PHP source code, project-specific
+   conventions, or some other approach.
 
-   > *How* this correspondence is documented is up to the developer. Examples:
-   >
-   > * end user documentation
-   > * composer.json
-   > * PHP source code
-   > * conventions (Drupal modules)
+2. A base namespace MAY correspond to the root directory of the code base.
 
-2. To prevent conflicts, different base namespaces SHOULD NOT correspond to the
+3. To prevent conflicts, different base namespaces SHOULD NOT correspond to the
    same directory.
 
-3. Each autoloadable namespace within a base namespace MUST have exactly one
+4. Each autoloadable namespace within a base namespace MUST have exactly one
    corresponding directory. That directory MUST be a subdirectory of the parent
    namespace's corresponding directory. The directory name MUST equal the
    namespace's unqualified name.
@@ -126,16 +123,16 @@ following rules:
    > We focus on namespaces with autoloadable classes only. Frameworks can do
    > whatever they want with other namespaces.
 
-4. Rule 3 does not apply to base namespaces within other base namespaces.
+5. Rule 4 does not apply to base namespaces within other base namespaces.
 
    > Allow the following:
    >
    > * \Acme\ -> src/
    > * \Acme\Test\ -> test/
 
-5. Each autoloadable class MUST belong to one of the base namespaces.
+6. Each autoloadable class MUST belong to one of the base namespaces.
 
-6. Each autoloadable class MUST be contained in a file located in the
+7. Each autoloadable class MUST be contained in a file located in the
    corresponding directory of the class' namespace. The file name MUST equal the
    class' unqualified name suffixed with `.php`.
 
