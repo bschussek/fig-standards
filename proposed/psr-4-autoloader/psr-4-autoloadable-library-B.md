@@ -154,7 +154,7 @@ The following list contains the autoloadable class names of a sample code base:
 * `\Acme\AddressBook\Test\AddressBookTest`
 
 The developer chose to document the base namespaces and their corresponding
-directories in the `README.txt` file bundled with the project:
+directories in the `README.txt` file bundled with the code base:
 
 > This application is PSR-4 compliant. The base namespaces and their
 > corresponding directories are:
@@ -162,7 +162,7 @@ directories in the `README.txt` file bundled with the project:
 > * `\Acme\AddressBook` => `/app/`
 > * `\Acme\AddressBook\Test` => `/test/`
 
-The directory structure of the project must then look like the following:
+The directory structure of the code base must then look like the following:
 
     app/
         Controller/
