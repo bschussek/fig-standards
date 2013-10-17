@@ -146,13 +146,12 @@ A PSR-4 compliant autoloadable code base MUST satisfy the following rules:
 5. Example Code Base
 --------------------
 
-The following snippet contains the autoloadable class names of a sample code
-base:
+The following list contains the autoloadable class names of a sample code base:
 
-     \Acme\AddressBook\AddressBook
-     \Acme\AddressBook\Controller\ContactController
-     \Acme\AddressBook\View\ContactView
-     \Acme\AddressBook\Test\AddressBookTest
+* `\Acme\AddressBook\AddressBook`
+* `\Acme\AddressBook\Controller\ContactController`
+* `\Acme\AddressBook\View\ContactView`
+* `\Acme\AddressBook\Test\AddressBookTest`
 
 The developer chose to document the base namespaces and their corresponding
 directories in the `README.txt` file bundled with the project:
