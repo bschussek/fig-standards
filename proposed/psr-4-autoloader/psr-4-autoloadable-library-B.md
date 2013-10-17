@@ -182,7 +182,23 @@ The directory structure of the code base must then look like the following:
                 Logger.php
     README.txt
 
-This example also contains a nested code base under `/vendor/monolog/`. Since no
+An alternative, compliant directory structure is:
+
+    app/
+        Controller/
+            ContactController.php
+        Test/
+            AddressBookTest.php
+        View/
+            ContactView.php
+        AddressBook.php
+    vendor/
+        ...
+
+This flexibility is possible because the base namespace `\Acme\AddressBook\Test`
+is a sub-namespace of the other base namespace `\Acme\AddressBook`.
+
+The example also contains a nested code base under `/vendor/monolog/`. Since no
 base namespace was mapped to that directory or any of its subdirectories, its
 autoloading mechanism and whether or not that code base is PSR-4 compliant is
 irrelevant here.
