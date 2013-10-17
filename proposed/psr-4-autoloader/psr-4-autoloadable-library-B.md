@@ -156,6 +156,9 @@ The following list contains the autoloadable class names of a sample code base:
 The developer chose to document the base namespaces and their corresponding
 directories in the `README.txt` file bundled with the code base:
 
+> README
+> ------
+>
 > This application is PSR-4 compliant. The base namespaces and their
 > corresponding directories are:
 >
