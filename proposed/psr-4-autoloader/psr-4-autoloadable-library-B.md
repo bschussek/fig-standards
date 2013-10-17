@@ -1,6 +1,13 @@
 PSR-4: Autoloadable Code Base
 =============================
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
+
+> Text written in a block quote (like this) is a comment and *not* part of the
+> specification. It will be removed from the final text.
+
 1. Introduction
 ---------------
 
@@ -27,21 +34,14 @@ or component, to which we refer as an autoloader. This name provides no further
 significance in the context of this document but is provided to clarify when
 and where file resource locations are determined in real world situations.
 
-2. Conventions used in this document
-------------------------------------
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
-interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
-
-3. Scope
+2. Scope
 --------
 
 This specification is partly backwards incompatible with PSR-0. Where a
 conflict occurs the rules in this specification precede, or override, the
 rules in PSR-0.
 
-4. Definitions
+3. Definitions
 --------------
 
 - A "Code Base" is a directory which contains PHP code. A code base can contain
@@ -90,7 +90,7 @@ rules in PSR-0.
   corresponding directory is explicitly defined. The base namespaces of nested
   code bases are not covered by this definition.
 
-5. Specification
+4. Specification
 ----------------
 
 This specification establishes a relationship between the fully qualified class
@@ -140,7 +140,7 @@ following rules:
    > Again we focus on autoloadable classes. A code base may contain other
    > classes that don't satisfy this rule.
 
-6. Example Algorithm
+5. Example Algorithm
 --------------------
 
 Autoloaders are free to choose any algorithm of their choice to locate files
