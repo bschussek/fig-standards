@@ -103,8 +103,7 @@ their corresponding directories (rules 1-5). Then the specification describes
 where a file that contains an autoloadable class should be located and how it
 should be named (rules 6-7).
 
-A code base is a PSR-4 compliant autoloadable code base if it satisfies the
-following rules:
+A PSR-4 compliant autoloadable code base MUST satisfy the following rules:
 
 1. The code base MUST document how to find one or more corresponding directories
    for at least one namespace. Such a namespace then becomes a base namespace.
