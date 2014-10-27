@@ -68,22 +68,37 @@ for autoloader interoperability, by mapping namespaces to file system paths.
 
   > A PHP namespace (anything after the "namespace" keyword) automatically has
   > at least one "namespace name". This rule is superfluous.
+  
+  >> If you are suggesting combining the first two, I think that would be a nice improvement.
+  >> But, in reality, the first doesn't come right out and say -- you must have a unique
+  >> vendor-name for all classes. So, combining would be fine, but the point is important
+  >> enough it should be stated.
 
 3. Each namespace can have as many sub-namespaces as it wishes.
 
   > This rule is superfluous. Of course it can.
+  
+  >> Agreed. (But, on the other hand! ;-) It doesn't hurt to say there is no limit.)
 
 4. Each namespace separator is converted to a `DIRECTORY_SEPARATOR` when
   loading from the file system.
 
   > Who does that? Must that happen or is it an option? What if I'm loading
   > from something else than the file system?
+  
+  >> Can you provide an example of this? IMO, this makes sense -- the interface
+  >> could certainly be a filesytem package [like](https://github.com/KnpLabs/Gaufrette)
+  >> or PHP filesystem commands.  An example of a limitation would help, though.
 
 5. The "fully qualified class name" MUST begin with a "namespace name", which
 MAY be followed by one or more additional namespace names, and MUST end in
 a class name.
 
   > Repetition of rule 1, which - as I have noted - is superfluous.
+  
+  >> Agree -- funny thing is -- you are driving to PSR-X -- Paul had the most
+  >> beautiful terse language but others added lots and lots of words. =)
+  >> This one _can_ go.
 
 6. A "namespace prefix" MUST correspond to at least one "base directory".
 
@@ -95,11 +110,21 @@ a class name.
   > * `Acme\Log\Formatter\`
   >
   > MUST correspond to one or more base directories? A pretty heavy restriction.
+  
+  >> No, but, LOL on that. Here's what I read that as -- any namespace prefix
+  >> identified above as those values mapped to base directories -- MUST
+  >> correspond to at least one base directory. It's an awkward wording, for sure.
+  >> So, what is it trying to say?  Basically, I think the intention is to say 
+  >> Namespace prefixes map to base directory(ies).
 
 7. A "namespace prefix" MAY correspond to more than one "base directory". The
 order in which an autoloader will attempt to map the file is not in the scope
 of this specification, but the consumer should be aware that different
 approaches may be used and should refer to the autoloader documentation.
+
+>> I would change this to combine to 6 and say "Namespace prefix map to one or more base directories."
+>> Not so sure I would add the condition about scope -- not speaking to it should suffice. But
+>> it's not a problem there, either.
 
 ### 3.2. Registered Autoloaders
 
@@ -120,12 +145,21 @@ approaches may be used and should refer to the autoloader documentation.
         >
         > Further, why must I replace them? Can't I choose another algorithm than
         > string replacement?
+        
+        >> This is an important aspect to PSR-4. It's simply saying the namespace prefix
+        >> and the base directory are interchangeable. When referencing the filesystem, 
+        >> the base directory is used. When referencing the FQCN, the namespace prefix is used.
+        >> I have no problem with this rule.
 
    1.2. Namespace separators in the "relative class name" portion of the
         "fully qualified class name" MUST be replaced with directory separators
         for the respective operating system.
 
         > Again, why can't a choose a different algorithm?
+        
+        >> The alogorithm is PSR-4. If you used a different approach, then the consistency
+        >> between different software would be gone. And that means no one would know how 
+        >> to resolve your namespaces. Nope, this is the basics of PSR-4. Gotta comply here. 
 
    1.3. The result MUST be suffixed with `.php`.
 
@@ -133,13 +167,23 @@ approaches may be used and should refer to the autoloader documentation.
    autoloader MUST include or require it.
 
    > Again coupling to the file system.
-
+   
+   >> You *have* to map the file system and the namespace or the autoloader has no
+   >> way of resolving which file to choose based on the namespace. 
+   >> The coupling you want to *avoid* is rules requiring all files and all folders
+   >> have a certain structure. THAT is bad coupling. 
+   
 3. The registered autoloader MUST NOT throw exceptions, MUST NOT raise errors
    of any level, and SHOULD NOT return a value.
 
    > Implementation details. I (library developer) don't care about this, that's
    > end-user business (i.e. if I choose a specific autoloader for an application,
    > I may choose one which throws exception or which doesn't - my responsibility).
+   
+   >> Disagree -- and this one got so much talk it could have had it's own podcast.
+   >> Discourage anyone from touching this. Or talking about it. Or breathing in it's 
+   >> general direction. Or looking at it like bratty teenagers do at their parents. 
+   >> Bury it - and bury the shovel it was buried with. 
 
 
 4. Implementations
